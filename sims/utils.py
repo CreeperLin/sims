@@ -171,7 +171,10 @@ def dict2list(dct, keys, default=None, match_fn=match_joint_specs):
 
 
 def update_array(x, obj, keys):
-    import torch
+    try:
+        import torch
+    except ImportError:
+        torch = None
     if obj is None:
         return
     inds = slice(None)
@@ -182,7 +185,7 @@ def update_array(x, obj, keys):
         inds, obj = dict2list(obj, keys, obj.pop('_default', None))
         # print('update_array', inds, obj)
         n = len(inds)
-    if isinstance(x, torch.Tensor):
+    if torch is not None and isinstance(x, torch.Tensor):
         obj = torch.from_numpy(obj) if isinstance(obj, np.ndarray) else torch.tensor(obj)
         obj = obj.view(-1).to(dtype=x.dtype, device=x.device)
     x[inds] = obj[:n]

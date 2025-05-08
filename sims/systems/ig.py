@@ -23,6 +23,7 @@ def init_fn(
     num_envs=1,
     asset_options=None,
     collapse_fixed_joints=True,
+    flip_visual_attachments=False,
     sim_params=None,
     plane_params=None,
     rs_props=None,
@@ -120,6 +121,8 @@ def init_fn(
         opts.default_dof_drive_mode = gymapi.DOF_MODE_NONE
     if collapse_fixed_joints:
         opts.collapse_fixed_joints = collapse_fixed_joints
+    if flip_visual_attachments:
+        opts.flip_visual_attachments = flip_visual_attachments
     update_obj(opts, ({} if asset_options is None else asset_options))
     print('collapse_fixed_joints', opts.collapse_fixed_joints)
     asset_root = os.path.abspath(asset_root)
